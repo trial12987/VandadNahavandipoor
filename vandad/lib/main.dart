@@ -84,13 +84,17 @@ void test4_4() async {
 //Stream<Iterable<Person>>  |------[P1,P2,..]------[P3]-------[P4,P5,P6]-----
 Stream<Iterable<Person>> getPersons3() async* {
   for (final url in Iterable.generate(2, (i) => '$peopleUrl${i + 1}.json')) {
+    1.log();
     yield await parseJson(url);
+    4.log();
   }
 }
 
 void test4_5() async {
   await for (final persons in getPersons3()) {
+    2.log();
     persons.log();
+    3.log();
   }
 }
 
@@ -118,7 +122,7 @@ class GetPeople with ListOfThingsAPI<Map<String, dynamic>> {
 
 void test4_6() async {
   final people = await GetApiEndPoints()
-      .get('http://127.0.0.1:5500/i/lib/apis/apis.json')
+      .get('http://127.0.0.1:5500/vandad/lib/apis/apis.json')
       .then(
         (urls) => Future.wait(
           urls.map(
@@ -188,7 +192,7 @@ void _getPersons(SendPort sp) async {
   Isolate.exit(sp, persons);
 }
 
-void testPersons() async {
+void test3_1() async {
   final persons = getPersons();
   persons.log();
 }
@@ -215,7 +219,7 @@ void _getMessages(SendPort sp) async {
   Isolate.exit(sp); // = Isolate.exit(sp, null);
 }
 
-void testMessages() async {
+void test3_2() async {
   await for (final msg in getMessages()) {
     msg.log();
   }
@@ -265,7 +269,7 @@ void _getPersons2(Request request) async {
   Isolate.exit(request.sendPort, persons);
 }
 
-void testPersons2() async {
+void test3_3() async {
   await for (final msg in getPersons2()) {
     msg.log();
   }
@@ -304,10 +308,7 @@ class MyHomePage extends StatelessWidget {
           children: [
             TextButton(
                 onPressed: () async {
-                  //testPersons();
-                  //testMessages();
-                  //testPersons2();
-                  test4_1();
+                  test3_3();
                 },
                 child: const Text('Press Me'))
           ],
